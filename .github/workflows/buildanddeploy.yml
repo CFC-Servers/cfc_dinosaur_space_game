@@ -47,25 +47,3 @@ jobs:
             ghcr.io/${{ steps.repository_name.outputs.lowercase }}:${{ steps.get_version.outputs.VERSION }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.GH_TOKEN }}
-      - name: SSH and deploy container
-        uses: CFC-Servers/ssh-action@v0.1.3
-        env:
-          DEPLOYMENT_DIR: ${{ secrets.DEPLOYMENT_DIR }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.GH_TOKEN }}
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          envs: DEPLOYMENT_DIR,DOCKER_USERNAME,DOCKER_PASSWORD
-          script_stop: true
-          script: |
-            cd $DEPLOYMENT_DIR
-            git fetch --all
-            git pull
-            docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" ghcr.io
-            docker-compose -f docker-compose.prod.yml pull
-            docker-compose -f docker-compose.prod.yml up -d --remove-orphans
-            # Clean up orphaned images
-            docker image prune -af
