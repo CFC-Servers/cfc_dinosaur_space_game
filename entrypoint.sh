@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd LMPServer
+cd server/LMPServer
 
 dotnet -version
 
