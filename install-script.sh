@@ -22,7 +22,5 @@ curl -L $DOWNLOAD_LINK -o LunaMultiplayer-Server-Release.zip
 
 unzip LunaMultiplayer-Server-Release.zip
 rm LunaMultiplayer-Server-Release.zip
-cd LMPServer
-dotnet Server.dll
 
 echo -e "Installed sucessfully"",
